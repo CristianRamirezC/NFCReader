@@ -6,135 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
-    <TextView
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="VALLIU - SIR - MIFARE SAM - CARD"
-        android:textColor="#8c72f9"
-        android:textSize="40dp"
-        android:textStyle="bold"
-        android:layout_margin="15dp"
-        android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:text="Bienvenido"
-        android:textColor="#8c72f9"
-        android:textSize="40dp"
-        android:layout_margin="5dp"
-        android:gravity="center"
-        android:background="#f5f5fa"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.2"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Digite sus credenciales:"
-        android:textSize="28dp"
-        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintVertical_bias="0.4"
-        app:layout_constraintHorizontal_bias="0.5"/>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintVertical_bias="0.6"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:text="Usuario :"
-                android:textSize="24dp"
-                android:textStyle="bold"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"/>
-
-            <EditText
-                android:id="@+id/email_field"
-                android:textSize="24dp"
-                android:textAlignment="center"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:text="Clave :"
-                android:textSize="24dp"
-                android:textStyle="bold"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"/>
-
-            <EditText
-                android:id="@+id/password_field"
-                android:textSize="24dp"
-                android:textAlignment="center"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/exit_button"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="Salir"
-        android:textSize="26dp"
-        android:visibility="gone"
-        android:background="#664dc9"
-        android:padding="10dp"
-        android:textColor="#ffffff"
-        android:textAllCaps="false"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintVertical_bias="0.9"
-        app:layout_constraintHorizontal_bias="0.4"
-        />
-
-    <Button
-        android:id="@+id/login_button"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:clickable="false"
-        android:enabled="false"
-        android:text="Login"
-        android:textSize="26dp"
-        android:textColor="#ffffff"
-        android:background="#664dc9"
-        android:padding="10dp"
-        android:textAllCaps="false"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintVertical_bias="0.9"
-        app:layout_constraintHorizontal_bias="0.6"/>
+        app:navGraph="@navigation/nav_graph" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

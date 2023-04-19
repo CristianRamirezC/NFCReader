@@ -25,13 +25,13 @@ class LoginViewModel @Inject constructor(
     private var _password = MutableLiveData<String>("")
     val password: LiveData<String> = _password
 
-    private var _isUserAbleToLogin = MutableLiveData<Boolean>()
+    private var _isUserAbleToLogin = MutableLiveData<Boolean>(false)
     val isUserAbleToLogin: LiveData<Boolean> = _isUserAbleToLogin
 
-    private var _loginResponseMessage = MutableLiveData<String>()
+    private var _loginResponseMessage = MutableLiveData<String>("")
     val loginResponseMessage: LiveData<String> = _loginResponseMessage
 
-    private var _isLoginButtonEnabled = MutableLiveData<Boolean>()
+    private var _isLoginButtonEnabled = MutableLiveData<Boolean>(false)
     val isLoginButtonEnabled: LiveData<Boolean> = _isLoginButtonEnabled
 
     fun loginUser(email: String, password: String) {

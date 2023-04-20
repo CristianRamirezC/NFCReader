@@ -40,7 +40,7 @@ class LoginFragment : Fragment() {
         initializeViewListeners(binding)
         initializeObservers(binding)
     }
-    
+
     private fun initializeViewListeners(binding: FragmentLoginBinding) {
         binding.emailField.afterTextChanged { email ->
             val password: String = loginViewModel.password.value!!

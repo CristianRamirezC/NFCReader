@@ -59,10 +59,4 @@ class ServiceModule() {
     fun provideApiClient(retrofit: Retrofit): ApiClient {
         return retrofit.create(ApiClient::class.java)
     }
-
-//    @Provides
-//    @Singleton
-//    fun provideApplication(): Application {
-//        return Application()
-//    }
 }

@@ -23,9 +23,6 @@
         android:theme="@style/Theme.NFCReader"
         tools:targetApi="31">
         <activity
-            android:name=".ui.view.FunctionsActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>

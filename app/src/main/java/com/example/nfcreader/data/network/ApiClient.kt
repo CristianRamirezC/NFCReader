@@ -6,7 +6,6 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-//private const val LOGIN_URL = "data-session"
 private const val LOGIN_URL = "sanctum/token"
 
 interface ApiClient {

@@ -9,12 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
-import com.example.nfcreader.R
 import com.example.nfcreader.databinding.FragmentLoginBinding
 import com.example.nfcreader.ui.viewModel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,8 +40,7 @@ class LoginFragment : Fragment() {
         initializeViewListeners(binding)
         initializeObservers(binding)
     }
-
-
+    
     private fun initializeViewListeners(binding: FragmentLoginBinding) {
         binding.emailField.afterTextChanged { email ->
             val password: String = loginViewModel.password.value!!
@@ -62,24 +61,23 @@ class LoginFragment : Fragment() {
         binding.loginButton.setOnClickListener {
             val email: String = loginViewModel.email.value!!
             val password: String = loginViewModel.password.value!!
-//            loginViewModel.loginUser(email = email, password = password)
-//            if(loginViewModel.isUserAbleToLogin.value!!) {
-            Log.i("navigating", "navigating")
-            findNavController().navigate(R.id.action_loginFragment_to_functionsFragment)
-//            }
+            loginViewModel.loginUser(email = email, password = password)
         }
     }
 
     private fun initializeObservers(binding: FragmentLoginBinding) {
 
-//        loginViewModel.isLoginButtonEnabled.observe(viewLifecycleOwner) {
-//            Log.i("initializeObservers", "$it")
-//            binding.loginButton.isClickable = it
-//            binding.loginButton.isEnabled = it
-//        }
+        loginViewModel.isLoginButtonEnabled.observe(viewLifecycleOwner) {
+            Log.i("initializeObservers", "$it")
+            binding.loginButton.isClickable = it
+            binding.loginButton.isEnabled = it
+        }
 
         loginViewModel.isUserAbleToLogin.observe(viewLifecycleOwner) {
-            Log.i("isUserAbleToLogin", "$it")
+            if (it) {
+                val action = LoginFragmentDirections.actionLoginFragmentToFunctionsFragment()
+                findNavController().navigate(action)
+            }
         }
     }
 }

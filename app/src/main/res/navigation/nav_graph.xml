@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginFragment">
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.nfcreader.ui.view.LoginFragment"
-        android:label="LoginFragment"
-        tools:layout="@layout/fragment_login">
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_functionsFragment"
             app:destination="@id/functionsFragment" />
@@ -16,6 +17,6 @@
     <fragment
         android:id="@+id/functionsFragment"
         android:name="com.example.nfcreader.ui.view.FunctionsFragment"
-        android:label="FunctionsFragment"
+        android:label="fragment_functions"
         tools:layout="@layout/fragment_functions" />
 </navigation>

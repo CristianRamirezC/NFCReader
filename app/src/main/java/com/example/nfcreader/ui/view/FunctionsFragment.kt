@@ -1,6 +1,7 @@
 package com.example.nfcreader.ui.view
 
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -34,6 +35,19 @@ class FunctionsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         functionsViewModel.connectToCardReader()
+        initObservers()
+        initViewListeners()
+
+    }
+
+    private fun initObservers() {
+        binding.transactionLogTextView.movementMethod = ScrollingMovementMethod()
+        functionsViewModel.functionsResult.observe(viewLifecycleOwner) {
+            binding.transactionLogTextView.text = it
+        }
+    }
+
+    private fun initViewListeners() {
         binding.initializeButton.setOnClickListener {
             Log.i("initializeButton", "Pressed")
             functionsViewModel.increaseCardLevel()

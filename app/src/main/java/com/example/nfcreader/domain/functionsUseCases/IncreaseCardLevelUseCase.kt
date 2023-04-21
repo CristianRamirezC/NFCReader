@@ -3,6 +3,7 @@ package com.example.nfcreader.domain.functionsUseCases
 import android.app.Application
 import android.util.Log
 import com.example.nfcreader.core.utils.constants.FunctionConstants
+import com.example.nfcreader.data.model.IncreaseCardLevelResponse
 import com.kinpos.KinposMobileSDK.BlueTooth.BlueToothKMPP
 import com.kinpos.KinposMobileSDK.Dispatchers.CallbackMpos
 import com.kinpos.KinposMobileSDK.KinposConnectLT.Model.KEMV_CONFIG_TERM
@@ -22,7 +23,9 @@ class IncreaseCardLevelUseCase @Inject constructor(
     private lateinit var posConnector: IPOSServiceConnector
     private var vector = FunctionConstants.vector
     private var customerName = FunctionConstants.customerName
-    fun increaseLevel() {
+
+    fun increaseLevel(): IncreaseCardLevelResponse {
+        val result: StringBuilder = StringBuilder()
         try {
             val btObj = BlueToothKMPP(
                 application,
@@ -38,7 +41,6 @@ class IncreaseCardLevelUseCase @Inject constructor(
             initParameters.language = KEMV_CONFIG_TERM().LANGUAGE_SPANISH
             posConnector.initPOSService(initParameters)
             cardKey = hexStringToByteArray("9EC5663586F84D80AF70140AFE63BBFA")
-            val result: StringBuilder = StringBuilder()
             result.append(
                 getDate(
                     System.currentTimeMillis(),
@@ -81,11 +83,23 @@ class IncreaseCardLevelUseCase @Inject constructor(
                     posConnector.writePersoMifare(hexStringToByteArray(blockHexa), cardKey)
             }
             val commitSuccess: Int = posConnector.commitPersoMifare()
-//            if (commitSuccess == 0) {
-//                binding.cardLabelTextView.text = "SL0"
-//            } else {
-//                binding.cardLabelTextView.text = "SL3"
-//            }
+            if (commitSuccess == 0) {
+                result.append(
+                    getDate(
+                        System.currentTimeMillis(),
+                        "dd/MM/yyyy hh:mm:ss.SSS a"
+                    ) + " -> " + "Commit Result: SL0"
+                )
+                result.append(System.getProperty("line.separator"))
+            } else {
+                result.append(
+                    getDate(
+                        System.currentTimeMillis(),
+                        "dd/MM/yyyy hh:mm:ss.SSS a"
+                    ) + " -> " + "Commit Result: SL3"
+                )
+                result.append(System.getProperty("line.separator"))
+            }
             posConnector.detectMifareSl3()
             val increaseStatus: Int =
                 posConnector.authMifareSl3(hexStringToByteArray("0390"), cardKey)
@@ -193,8 +207,10 @@ class IncreaseCardLevelUseCase @Inject constructor(
             Log.i("IncreaseLevelTest", "$byteArrayTest")
             result.append(System.getProperty("line.separator"))
 //            binding.transactionLogTextView.text = result
+            return IncreaseCardLevelResponse(result)
         } catch (e: Exception) {
             Log.e("ErrorIncreasingCardLevel", "$e")
+            return IncreaseCardLevelResponse()
         }
     }
 

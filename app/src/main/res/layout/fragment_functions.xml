@@ -135,9 +135,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Informacion Transaccion :"
-        android:textSize="40dp"
+        android:textSize="20dp"
         android:textStyle="bold"
-        android:visibility="invisible" />
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/transaction_log_text_view"
@@ -148,7 +148,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.54"
         android:layout_width="match_parent"
-        android:layout_height="261dp"
+        android:layout_height="350dp"
         android:background="#000000"
         android:padding="5dp"
         android:scrollbarFadeDuration="0"
@@ -165,8 +165,8 @@
                       \nDate time: Data save card successfull
                       \nDate time: Card off"
         android:textColor="#66FF33"
-        android:textSize="28dp"
-        android:visibility="invisible" />
+        android:textSize="20dp"
+        android:visibility="visible" />
 
     <Button
         android:id="@+id/exit_button"

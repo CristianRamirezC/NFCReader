@@ -16,8 +16,8 @@ class ConnectToCardReaderUseCase @Inject constructor(
     private val application: Application
 ) : CallbackMpos {
     private lateinit var posConnector: IPOSServiceConnector
-    private var vector = FunctionConstants.vector
-    private var customerName = FunctionConstants.customerName
+    private var vector = FunctionConstants.VECTOR
+    private var customerName = FunctionConstants.CUSTOMER_NAME
 
     fun connectToCardReader() {
         try {
@@ -28,7 +28,7 @@ class ConnectToCardReaderUseCase @Inject constructor(
                 10000
             )
             //linea para exponer en el plugin
-            btObj.setBluetoothParameters(FunctionConstants.cardReaderMacAddress)
+            btObj.setBluetoothParameters(FunctionConstants.CARD_READER_MAC_ADDRESS)
             posConnector = BTPOSServiceConnector(btObj, this)
 
             val initParameters = InitPosParameters(customerName, vector)

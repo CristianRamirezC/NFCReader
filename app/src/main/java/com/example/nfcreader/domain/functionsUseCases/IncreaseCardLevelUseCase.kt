@@ -21,8 +21,8 @@ class IncreaseCardLevelUseCase @Inject constructor(
 ) : CallbackMpos {
     private lateinit var cardKey: ByteArray
     private lateinit var posConnector: IPOSServiceConnector
-    private var vector = FunctionConstants.vector
-    private var customerName = FunctionConstants.customerName
+    private var vector = FunctionConstants.VECTOR
+    private var customerName = FunctionConstants.CUSTOMER_NAME
 
     fun increaseLevel(): IncreaseCardLevelResponse {
         val result: StringBuilder = StringBuilder()
@@ -32,7 +32,7 @@ class IncreaseCardLevelUseCase @Inject constructor(
                 10000,
                 10000
             )
-            btObj.setBluetoothParameters(FunctionConstants.cardReaderMacAddress) //linea para exponer en el plugin
+            btObj.setBluetoothParameters(FunctionConstants.CARD_READER_MAC_ADDRESS) //linea para exponer en el plugin
             posConnector = BTPOSServiceConnector(btObj, this)
             val initParameters = InitPosParameters(customerName, vector)
             initParameters.btName = "D135"

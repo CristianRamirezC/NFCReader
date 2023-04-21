@@ -5,6 +5,7 @@ import com.example.nfcreader.data.network.ApiClient
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.kinpos.KinposMobileSDK.Dispatchers.CallbackMpos
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

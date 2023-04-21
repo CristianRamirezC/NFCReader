@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.nfcreader.data.model.LoginRequest
 import com.example.nfcreader.data.model.LoginResponse
 import com.example.nfcreader.domain.LoginUseCase
+import com.kinpos.KinposMobileSDK.Dispatchers.CallbackMpos
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

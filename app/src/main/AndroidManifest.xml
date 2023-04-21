@@ -5,15 +5,36 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
+    <!-- Request legacy Bluetooth permissions on older devices. -->
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
+
+    <!-- Needed only if your app looks for Bluetooth devices.
+     If the app doesn't use Bluetooth scan results to derive physical
+     location information, strongly assert that the app
+     doesn't derive physical location. -->
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+
+    <!-- Needed only if the app communicates with already-paired Bluetooth
+        devices. -->
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 
+    <!-- testing bluetooth permissions-->
+    <!-- Needed only if the app makes the device discoverable to Bluetooth
+         devices. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+
+    <!--Delete line android:usesCleartextTraffic="true" when server change to https,
+    this line is ony configure to be able to make api calls to http server and should not be used
+    on production-->
     <application
-        android:allowBackup="true"
-        android:usesCleartextTraffic="true"
         android:name=".MyApplication"
+        android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -21,6 +42,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NFCReader"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".ui.MainActivity"
@@ -32,5 +54,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

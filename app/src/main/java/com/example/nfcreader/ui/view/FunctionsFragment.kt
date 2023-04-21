@@ -9,7 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.nfcreader.databinding.FragmentFunctionsBinding
 import com.example.nfcreader.ui.viewModel.FunctionsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FunctionsFragment : Fragment() {
 
     private var _binding: FragmentFunctionsBinding? = null
@@ -33,6 +35,7 @@ class FunctionsFragment : Fragment() {
 
         functionsViewModel.connectToCardReader()
         binding.initializeButton.setOnClickListener {
+            Log.i("initializeButton", "Pressed")
             functionsViewModel.increaseCardLevel()
         }
     }

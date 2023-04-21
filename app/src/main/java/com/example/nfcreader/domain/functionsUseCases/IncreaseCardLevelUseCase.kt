@@ -1,12 +1,16 @@
-package com.example.nfcreader.domain
+package com.example.nfcreader.domain.functionsUseCases
 
 import android.app.Application
 import android.util.Log
+import com.example.nfcreader.core.utils.constants.FunctionConstants
 import com.kinpos.KinposMobileSDK.BlueTooth.BlueToothKMPP
 import com.kinpos.KinposMobileSDK.Dispatchers.CallbackMpos
+import com.kinpos.KinposMobileSDK.KinposConnectLT.Model.KEMV_CONFIG_TERM
 import com.kinpos.KinposMobileSDK.POS.BTPOSServiceConnector
 import com.kinpos.KinposMobileSDK.POS.IPOSServiceConnector
-import com.kinpos.KinposMobileSDK.Utiles.HexUtil
+import com.kinpos.KinposMobileSDK.POS.InitPosParameters
+import com.kinpos.KinposMobileSDK.Utiles.HexUtil.byteArrayToHexString
+import com.kinpos.KinposMobileSDK.Utiles.HexUtil.hexStringToByteArray
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -16,8 +20,8 @@ class IncreaseCardLevelUseCase @Inject constructor(
 ) : CallbackMpos {
     private lateinit var cardKey: ByteArray
     private lateinit var posConnector: IPOSServiceConnector
-
-
+    private var vector = FunctionConstants.vector
+    private var customerName = FunctionConstants.customerName
     fun increaseLevel() {
         try {
             val btObj = BlueToothKMPP(
@@ -25,9 +29,15 @@ class IncreaseCardLevelUseCase @Inject constructor(
                 10000,
                 10000
             )
-            btObj.setBluetoothParameters("54:81:2D:7E:0B:8C") //linea para exponer en el plugin
+            btObj.setBluetoothParameters(FunctionConstants.cardReaderMacAddress) //linea para exponer en el plugin
             posConnector = BTPOSServiceConnector(btObj, this)
-            cardKey = HexUtil.hexStringToByteArray("9EC5663586F84D80AF70140AFE63BBFA")
+            val initParameters = InitPosParameters(customerName, vector)
+            initParameters.btName = "D135"
+            initParameters.idleOne = "One"
+            initParameters.idleTwo = "Two"
+            initParameters.language = KEMV_CONFIG_TERM().LANGUAGE_SPANISH
+            posConnector.initPOSService(initParameters)
+            cardKey = hexStringToByteArray("9EC5663586F84D80AF70140AFE63BBFA")
             val result: StringBuilder = StringBuilder()
             result.append(
                 getDate(
@@ -37,8 +47,8 @@ class IncreaseCardLevelUseCase @Inject constructor(
             )
             result.append(System.getProperty("line.separator"))
 //            binding.transactionLogTextView.setText(result)
-            val deteccionInicial: Int = posConnector.detectMifareSl3()
-            if (deteccionInicial == 0) {
+            val initialDetection: Int = posConnector.detectMifareSl3()
+            if (initialDetection == 0) {
                 result.append(
                     getDate(
                         System.currentTimeMillis(),
@@ -56,19 +66,19 @@ class IncreaseCardLevelUseCase @Inject constructor(
             result.append(System.getProperty("line.separator"))
 //            binding.transactionLogTextView.setText(result)
             val b: Int =
-                posConnector.writePersoMifare(HexUtil.hexStringToByteArray("0090"), cardKey)
+                posConnector.writePersoMifare(hexStringToByteArray("0090"), cardKey)
             val c: Int =
-                posConnector.writePersoMifare(HexUtil.hexStringToByteArray("0190"), cardKey)
+                posConnector.writePersoMifare(hexStringToByteArray("0190"), cardKey)
             val d: Int =
-                posConnector.writePersoMifare(HexUtil.hexStringToByteArray("0290"), cardKey)
+                posConnector.writePersoMifare(hexStringToByteArray("0290"), cardKey)
             val e: Int =
-                posConnector.writePersoMifare(HexUtil.hexStringToByteArray("0390"), cardKey)
+                posConnector.writePersoMifare(hexStringToByteArray("0390"), cardKey)
             for (blockIndex in 0..127) {
                 val blockHexa: String =
-                    HexUtil.byteArrayToHexString(byteArrayOf(blockIndex.toByte()))
+                    byteArrayToHexString(byteArrayOf(blockIndex.toByte()))
                         .uppercase(Locale.ROOT) + "40"
                 val s: Int =
-                    posConnector.writePersoMifare(HexUtil.hexStringToByteArray(blockHexa), cardKey)
+                    posConnector.writePersoMifare(hexStringToByteArray(blockHexa), cardKey)
             }
             val commitSuccess: Int = posConnector.commitPersoMifare()
 //            if (commitSuccess == 0) {
@@ -78,7 +88,7 @@ class IncreaseCardLevelUseCase @Inject constructor(
 //            }
             posConnector.detectMifareSl3()
             val increaseStatus: Int =
-                posConnector.authMifareSl3(HexUtil.hexStringToByteArray("0390"), cardKey)
+                posConnector.authMifareSl3(hexStringToByteArray("0390"), cardKey)
             if (increaseStatus == 0) {
                 result.append(
                     getDate(
@@ -95,18 +105,18 @@ class IncreaseCardLevelUseCase @Inject constructor(
             var otherIndex = 0
             for (blockIndex in 0..127) {
                 val blockHexa: String =
-                    HexUtil.byteArrayToHexString(byteArrayOf(blockIndex.toByte()))
+                    byteArrayToHexString(byteArrayOf(blockIndex.toByte()))
                         .uppercase(Locale.ROOT) + "00"
                 if (blockIndex != (otherIndex + 1) * 4 - 1) {
                     val autenticacionBloque4000: Int =
-                        posConnector.authMifareSl3(HexUtil.hexStringToByteArray("0040"), cardKey)
+                        posConnector.authMifareSl3(hexStringToByteArray("0040"), cardKey)
                     when (blockIndex) {
                         12 -> {
-                            val escrituraBloqueDoce: Int = posConnector.writeMifareSl3(
-                                HexUtil.hexStringToByteArray(blockHexa),
-                                HexUtil.hexStringToByteArray("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+                            val writingBlockTwelve: Int = posConnector.writeMifareSl3(
+                                hexStringToByteArray(blockHexa),
+                                hexStringToByteArray("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
                             )
-                            if (escrituraBloqueDoce == 0) {
+                            if (writingBlockTwelve == 0) {
                                 result.append(
                                     getDate(
                                         System.currentTimeMillis(),
@@ -123,11 +133,11 @@ class IncreaseCardLevelUseCase @Inject constructor(
                             }
                         }
                         13 -> {
-                            val escrituraBloqueTrece: Int = posConnector.writeMifareSl3(
-                                HexUtil.hexStringToByteArray(blockHexa),
-                                HexUtil.hexStringToByteArray("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
+                            val writingBlockThirteen: Int = posConnector.writeMifareSl3(
+                                hexStringToByteArray(blockHexa),
+                                hexStringToByteArray("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
                             )
-                            if (escrituraBloqueTrece == 0) {
+                            if (writingBlockThirteen == 0) {
                                 result.append(
                                     getDate(
                                         System.currentTimeMillis(),
@@ -144,11 +154,11 @@ class IncreaseCardLevelUseCase @Inject constructor(
                             }
                         }
                         14 -> {
-                            val escrituraBloqueCatorce: Int = posConnector.writeMifareSl3(
-                                HexUtil.hexStringToByteArray(blockHexa),
-                                HexUtil.hexStringToByteArray("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC")
+                            val writingBlockFourteen: Int = posConnector.writeMifareSl3(
+                                hexStringToByteArray(blockHexa),
+                                hexStringToByteArray("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC")
                             )
-                            if (escrituraBloqueCatorce == 0) {
+                            if (writingBlockFourteen == 0) {
                                 result.append(
                                     getDate(
                                         System.currentTimeMillis(),
@@ -165,9 +175,9 @@ class IncreaseCardLevelUseCase @Inject constructor(
                             }
                         }
                         else -> {
-                            val escrituraOtrosBloques: Int = posConnector.writeMifareSl3(
-                                HexUtil.hexStringToByteArray(blockHexa),
-                                HexUtil.hexStringToByteArray("00000000000000000000000000000000")
+                            val otherBlocksWriting: Int = posConnector.writeMifareSl3(
+                                hexStringToByteArray(blockHexa),
+                                hexStringToByteArray("00000000000000000000000000000000")
                             )
                         }
                     }
@@ -176,11 +186,11 @@ class IncreaseCardLevelUseCase @Inject constructor(
                 }
             }
             posConnector.detectMifareSl3()
-            val autenticacionBloque400: Int =
-                posConnector.authMifareSl3(HexUtil.hexStringToByteArray("0040"), cardKey)
-            val hola: ByteArray? =
-                posConnector.readMifareSl3(HexUtil.hexStringToByteArray("0C00"), 0x01.toByte())
-            Log.i("IncreaseLevelTest", "$hola")
+            val block4000Authentication: Int =
+                posConnector.authMifareSl3(hexStringToByteArray("0040"), cardKey)
+            val byteArrayTest: ByteArray? =
+                posConnector.readMifareSl3(hexStringToByteArray("0C00"), 0x01.toByte())
+            Log.i("IncreaseLevelTest", "$byteArrayTest")
             result.append(System.getProperty("line.separator"))
 //            binding.transactionLogTextView.text = result
         } catch (e: Exception) {
@@ -198,7 +208,5 @@ class IncreaseCardLevelUseCase @Inject constructor(
     }
 
     override fun showMposMessage(codMsg: Int, msg: String) {
-        TODO("Not yet implemented")
     }
-
 }

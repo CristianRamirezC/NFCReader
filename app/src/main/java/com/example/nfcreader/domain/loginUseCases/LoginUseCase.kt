@@ -1,6 +1,5 @@
-package com.example.nfcreader.domain
+package com.example.nfcreader.domain.loginUseCases
 
-import com.example.nfcreader.data.model.LoginData
 import com.example.nfcreader.data.model.LoginResponse
 import com.example.nfcreader.data.model.LoginRequest
 import com.example.nfcreader.data.repository.ApiRepository

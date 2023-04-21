@@ -1,31 +1,34 @@
-package com.example.nfcreader.domain
+package com.example.nfcreader.domain.functionsUseCases
 
 import android.app.Application
 import android.util.Log
+import com.example.nfcreader.core.utils.constants.FunctionConstants
 import com.kinpos.KinposMobileSDK.BlueTooth.BlueToothKMPP
 import com.kinpos.KinposMobileSDK.Dispatchers.CallbackMpos
 import com.kinpos.KinposMobileSDK.KinposConnectLT.Model.KEMV_CONFIG_TERM
 import com.kinpos.KinposMobileSDK.POS.BTPOSServiceConnector
 import com.kinpos.KinposMobileSDK.POS.IPOSServiceConnector
 import com.kinpos.KinposMobileSDK.POS.InitPosParameters
+import com.kinpos.KinposMobileSDK.Utiles.appContext
 import javax.inject.Inject
 
 class ConnectToCardReaderUseCase @Inject constructor(
     private val application: Application
 ) : CallbackMpos {
     private lateinit var posConnector: IPOSServiceConnector
-    private var vector =
-        "7FDC5D1EFE92EBB3B89B0307158F2C29A264EBB4599242E96F27A60801F0EF442050C1E1CCA9DCAFA3B098FE5381380C055D3A13E603B63318A8088825D595B9" //release vector
-    private var customerName = "KINPOS"
+    private var vector = FunctionConstants.vector
+    private var customerName = FunctionConstants.customerName
 
     fun connectToCardReader() {
         try {
+            appContext = application
             val btObj = BlueToothKMPP(
                 application,
                 10000,
                 10000
             )
-            btObj.setBluetoothParameters("54:81:2D:7E:0B:8C") //linea para exponer en el plugin
+            //linea para exponer en el plugin
+            btObj.setBluetoothParameters(FunctionConstants.cardReaderMacAddress)
             posConnector = BTPOSServiceConnector(btObj, this)
 
             val initParameters = InitPosParameters(customerName, vector)
@@ -43,5 +46,4 @@ class ConnectToCardReaderUseCase @Inject constructor(
     override fun showMposMessage(codMsg: Int, msg: String) {
         TODO("Not yet implemented")
     }
-
 }

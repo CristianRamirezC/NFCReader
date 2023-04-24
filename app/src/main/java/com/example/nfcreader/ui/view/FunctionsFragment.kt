@@ -33,7 +33,7 @@ class FunctionsFragment : Fragment() {
 
         initObservers()
         initViewListeners()
-        functionsViewModel.connectToCardReader()
+//        functionsViewModel.connectToCardReader()
     }
 
     private fun initObservers() {

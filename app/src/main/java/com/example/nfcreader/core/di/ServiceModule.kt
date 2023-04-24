@@ -75,9 +75,10 @@ class ServiceModule() : CallbackMpos {
     fun providePosConnector(
         blueToothKMPP: BlueToothKMPP,
         initParameters: InitPosParameters
-    ): IPOSServiceConnector {
+    ): BTPOSServiceConnector {
+//        lateinit var posConnector: IPOSServiceConnector
         blueToothKMPP.setBluetoothParameters(FunctionConstants.CARD_READER_MAC_ADDRESS)
-        val posConnector = BTPOSServiceConnector(btConnector = blueToothKMPP, callbackMpos = this)
+        val posConnector = BTPOSServiceConnector(blueToothKMPP, this)
         posConnector.initPOSService(initParameters)
         return posConnector
     }
@@ -86,10 +87,7 @@ class ServiceModule() : CallbackMpos {
     @Singleton
     fun provideInitPosParameters(): InitPosParameters {
         val initParameters =
-            InitPosParameters(
-                customerName = FunctionConstants.CUSTOMER_NAME,
-                vector = FunctionConstants.VECTOR
-            )
+            InitPosParameters(FunctionConstants.CUSTOMER_NAME, FunctionConstants.VECTOR)
         initParameters.btName = "D135"
         initParameters.idleOne = "One"
         initParameters.idleTwo = "Two"
@@ -97,17 +95,17 @@ class ServiceModule() : CallbackMpos {
         return initParameters
     }
 
+    override fun showMposMessage(codMsg: Int, msg: String) {
+    }
+
     @Provides
     @Singleton
     fun provideBlueToothKMPP(application: Application): BlueToothKMPP {
         appContext = application
         return BlueToothKMPP(
-            contexto = application,
-            toConnectReq = 10000,
-            toReceiveReq = 10000
+            application,
+            10000,
+            10000
         )
-    }
-
-    override fun showMposMessage(codMsg: Int, msg: String) {
     }
 }

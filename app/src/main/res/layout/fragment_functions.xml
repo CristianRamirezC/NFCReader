@@ -153,17 +153,7 @@
         android:padding="5dp"
         android:scrollbarFadeDuration="0"
         android:scrollbars="vertical"
-        android:text="Date time: Card detect
-                      \nDate time: New section = UUID
-                      \nDate time: Authentication OK
-                      \nDate time: Data written OK
-                      \nDate time: Data save card successfull
-                      \nDate time: Card off
-                      \nDate time: New section = UUID
-                      \nDate time: Authentication OK
-                      \nDate time: Data written OK
-                      \nDate time: Data save card successfull
-                      \nDate time: Card off"
+        android:text=""
         android:textColor="#66FF33"
         android:textSize="20dp"
         android:visibility="visible" />

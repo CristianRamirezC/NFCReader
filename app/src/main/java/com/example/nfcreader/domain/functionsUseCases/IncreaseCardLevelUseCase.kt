@@ -8,6 +8,7 @@ import com.kinpos.KinposMobileSDK.BlueTooth.BlueToothKMPP
 import com.kinpos.KinposMobileSDK.Dispatchers.CallbackMpos
 import com.kinpos.KinposMobileSDK.KinposConnectLT.Model.KEMV_CONFIG_TERM
 import com.kinpos.KinposMobileSDK.POS.BTPOSServiceConnector
+import com.kinpos.KinposMobileSDK.POS.EasyTapPosConnector
 import com.kinpos.KinposMobileSDK.POS.IPOSServiceConnector
 import com.kinpos.KinposMobileSDK.POS.InitPosParameters
 import com.kinpos.KinposMobileSDK.Utiles.HexUtil.byteArrayToHexString
@@ -17,29 +18,28 @@ import java.util.*
 import javax.inject.Inject
 
 class IncreaseCardLevelUseCase @Inject constructor(
-    private val application: Application
-) : CallbackMpos {
+    private val application: Application,
+    private val posConnector: IPOSServiceConnector
+) {
     private lateinit var cardKey: ByteArray
-    private lateinit var posConnector: IPOSServiceConnector
-    private var vector = FunctionConstants.VECTOR
-    private var customerName = FunctionConstants.CUSTOMER_NAME
 
+    //    private lateinit var posConnector: IPOSServiceConnector
     fun increaseLevel(): IncreaseCardLevelResponse {
         val result: StringBuilder = StringBuilder()
         try {
-            val btObj = BlueToothKMPP(
-                application,
-                10000,
-                10000
-            )
-            btObj.setBluetoothParameters(FunctionConstants.CARD_READER_MAC_ADDRESS) //linea para exponer en el plugin
-            posConnector = BTPOSServiceConnector(btObj, this)
-            val initParameters = InitPosParameters(customerName, vector)
-            initParameters.btName = "D135"
-            initParameters.idleOne = "One"
-            initParameters.idleTwo = "Two"
-            initParameters.language = KEMV_CONFIG_TERM().LANGUAGE_SPANISH
-            posConnector.initPOSService(initParameters)
+//            val btObj = BlueToothKMPP(
+//                application,
+//                10000,
+//                10000
+//            )
+//            btObj.setBluetoothParameters(FunctionConstants.CARD_READER_MAC_ADDRESS) //linea para exponer en el plugin
+//            posConnector = BTPOSServiceConnector(btObj, this)
+//            val initParameters = InitPosParameters(FunctionConstants.CUSTOMER_NAME, FunctionConstants.VECTOR)
+//            initParameters.btName = "D135"
+//            initParameters.idleOne = "One"
+//            initParameters.idleTwo = "Two"
+//            initParameters.language = KEMV_CONFIG_TERM().LANGUAGE_SPANISH
+//            posConnector.initPOSService(initParameters)
             cardKey = hexStringToByteArray("9EC5663586F84D80AF70140AFE63BBFA")
             result.append(
                 getDate(
@@ -221,8 +221,5 @@ class IncreaseCardLevelUseCase @Inject constructor(
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = milliSeconds
         return formatter.format(calendar.time)
-    }
-
-    override fun showMposMessage(codMsg: Int, msg: String) {
     }
 }

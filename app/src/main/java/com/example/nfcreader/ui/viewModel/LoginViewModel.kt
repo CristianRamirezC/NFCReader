@@ -37,23 +37,24 @@ class LoginViewModel @Inject constructor(
     fun loginUser(email: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val loginUserObject = LoginRequest(
-                    email = email,
-                    password = password,
-                    deviceName = "postman"
-                )
-                val loginResponse: LoginResponse = loginUseCase.loginUser(loginUserObject)
-                Log.i("LoginResponse", "$loginResponse")
-                if (loginResponse.message == "ok") {
-                    _isUserAbleToLogin.postValue(true)
-                    _loginResponseMessage.postValue(loginResponse.message)
-                } else {
-                    _isUserAbleToLogin.postValue(false)
-                    _loginResponseMessage.postValue(loginResponse.message)
-                }
+//                val loginUserObject = LoginRequest(
+//                    email = email,
+//                    password = password,
+//                    deviceName = "postman"
+//                )
+//                val loginResponse: LoginResponse = loginUseCase.loginUser(loginUserObject)
+//                Log.i("LoginResponse", "$loginResponse")
+//                if (loginResponse.message == "ok") {
+//                    _isUserAbleToLogin.postValue(true)
+//                    _loginResponseMessage.postValue(loginResponse.message)
+//                } else {
+//                    _isUserAbleToLogin.postValue(false)
+//                    _loginResponseMessage.postValue(loginResponse.message)
+//                }
+                _isUserAbleToLogin.postValue(true)
 
             } catch (e: Exception) {
-                Log.e("UserLoginError", "$e")
+                Log.e("UserLoginError", "${e.message}")
             }
         }
     }

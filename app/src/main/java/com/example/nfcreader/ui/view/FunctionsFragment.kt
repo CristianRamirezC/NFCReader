@@ -18,9 +18,6 @@ class FunctionsFragment : Fragment() {
     private var _binding: FragmentFunctionsBinding? = null
     private val binding get() = _binding!!
     private val functionsViewModel: FunctionsViewModel by viewModels()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,10 +31,9 @@ class FunctionsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        functionsViewModel.connectToCardReader()
         initObservers()
         initViewListeners()
-
+        functionsViewModel.connectToCardReader()
     }
 
     private fun initObservers() {

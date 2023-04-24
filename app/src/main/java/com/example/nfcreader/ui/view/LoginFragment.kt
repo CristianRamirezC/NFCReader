@@ -67,11 +67,14 @@ class LoginFragment : Fragment() {
 
     private fun initializeObservers(binding: FragmentLoginBinding) {
 
-        loginViewModel.isLoginButtonEnabled.observe(viewLifecycleOwner) {
-            Log.i("initializeObservers", "$it")
-            binding.loginButton.isClickable = it
-            binding.loginButton.isEnabled = it
-        }
+        binding.loginButton.isClickable = true
+        binding.loginButton.isEnabled = true
+
+//        loginViewModel.isLoginButtonEnabled.observe(viewLifecycleOwner) {
+//            Log.i("initializeObservers", "$it")
+//            binding.loginButton.isClickable = it
+//            binding.loginButton.isEnabled = it
+//        }
 
         loginViewModel.isUserAbleToLogin.observe(viewLifecycleOwner) {
             if (it) {

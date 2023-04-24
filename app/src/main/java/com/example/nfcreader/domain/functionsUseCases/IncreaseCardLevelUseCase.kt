@@ -1,16 +1,8 @@
 package com.example.nfcreader.domain.functionsUseCases
 
-import android.app.Application
 import android.util.Log
-import com.example.nfcreader.core.utils.constants.FunctionConstants
 import com.example.nfcreader.data.model.IncreaseCardLevelResponse
-import com.kinpos.KinposMobileSDK.BlueTooth.BlueToothKMPP
-import com.kinpos.KinposMobileSDK.Dispatchers.CallbackMpos
-import com.kinpos.KinposMobileSDK.KinposConnectLT.Model.KEMV_CONFIG_TERM
-import com.kinpos.KinposMobileSDK.POS.BTPOSServiceConnector
-import com.kinpos.KinposMobileSDK.POS.EasyTapPosConnector
 import com.kinpos.KinposMobileSDK.POS.IPOSServiceConnector
-import com.kinpos.KinposMobileSDK.POS.InitPosParameters
 import com.kinpos.KinposMobileSDK.Utiles.HexUtil.byteArrayToHexString
 import com.kinpos.KinposMobileSDK.Utiles.HexUtil.hexStringToByteArray
 import java.text.SimpleDateFormat
@@ -18,7 +10,6 @@ import java.util.*
 import javax.inject.Inject
 
 class IncreaseCardLevelUseCase @Inject constructor(
-    private val application: Application,
     private val posConnector: IPOSServiceConnector
 ) {
     private lateinit var cardKey: ByteArray

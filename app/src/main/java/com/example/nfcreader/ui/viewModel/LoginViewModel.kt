@@ -52,7 +52,6 @@ class LoginViewModel @Inject constructor(
 //                    _loginResponseMessage.postValue(loginResponse.message)
 //                }
                 _isUserAbleToLogin.postValue(true)
-
             } catch (e: Exception) {
                 Log.e("UserLoginError", "${e.message}")
             }
